@@ -304,9 +304,9 @@ class CodebaseIngestor:
         
         self.temp_repo_dir.mkdir(parents=True, exist_ok=True)
         
-        print(f"📥 Cloning repository: {url}")
+        print(f"Cloning repository: {url}")
         git.Repo.clone_from(url, self.temp_repo_dir)
-        print(f"✅ Repository cloned to: {self.temp_repo_dir}")
+        print(f"[OK] Repository cloned to: {self.temp_repo_dir}")
         
         return self.temp_repo_dir
     
@@ -326,7 +326,7 @@ class CodebaseIngestor:
             'temp_repo', 'chroma_db', '__pycache__', '*.pyc', '.git', 'node_modules'
         ))
         
-        print(f"✅ Local directory copied to: {self.temp_repo_dir}")
+        print(f"[OK] Local directory copied to: {self.temp_repo_dir}")
         return self.temp_repo_dir
     
     def discover_files(self) -> List[Path]:
@@ -347,7 +347,7 @@ class CodebaseIngestor:
         try:
             content = file_path.read_text(encoding='utf-8', errors='ignore')
         except Exception as e:
-            print(f"⚠️  Could not read {file_path}: {e}")
+            print(f"[WARNING] Could not read {file_path}: {e}")
             return []
         
         relative_path = str(file_path.relative_to(self.temp_repo_dir))
@@ -425,16 +425,16 @@ class CodebaseIngestor:
         for file_path in files:
             entities = self.extract_entities_from_file(file_path)
             all_entities.extend(entities)
-            print(f"  📄 {file_path.name}: {len(entities)} entities")
+            print(f"  - {file_path.name}: {len(entities)} entities")
         
-        print(f"\n🔍 Total entities extracted: {len(all_entities)}")
+        print(f"\nTotal entities extracted: {len(all_entities)}")
         
         # Create documents
         parent_docs = self.create_parent_documents(all_entities)
         child_docs = self.create_child_documents(all_entities)
         
-        print(f"📦 Parent documents: {len(parent_docs)}")
-        print(f"📦 Child documents: {len(child_docs)}")
+        print(f"Parent documents: {len(parent_docs)}")
+        print(f"Child documents: {len(child_docs)}")
         
         return parent_docs, child_docs
 

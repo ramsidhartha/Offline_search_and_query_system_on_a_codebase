@@ -22,11 +22,10 @@ from core.rag_engine import RAGEngine
 def print_banner():
     """Print application banner."""
     print("""
-╔═══════════════════════════════════════════════════════════════════╗
-║         🧠 Structural Code Intelligence System                   ║
-║         AST-Aware • Offline • Citation-Grounded                  ║
-╚═══════════════════════════════════════════════════════════════════╝
-""")
+==================================================================
+     Structural Code Intelligence System
+     AST-Aware | Offline | Citation-Grounded
+==================================================================""")
 
 
 def print_separator():
@@ -37,7 +36,7 @@ def print_separator():
 def cmd_ingest(args):
     """Handle ingest command."""
     print_banner()
-    print(f"📥 Target: {args.target}\n")
+    print(f"Target: {args.target}\n")
     
     base_dir = Path(__file__).parent
     
@@ -62,7 +61,7 @@ def cmd_ingest(args):
     
     print()
     print_separator()
-    print("✅ Ingestion Complete!")
+    print("[DONE] Ingestion Complete!")
     print_separator()
     print(f"   Parent Entities: {stats['parent_count']}")
     print(f"   Child Chunks:    {stats['child_count']}")
@@ -80,10 +79,10 @@ def cmd_query(args):
     # Check if index exists
     status = engine.get_status()
     if status['parent_documents'] == 0:
-        print("❌ No documents indexed. Run 'ingest' first.")
+        print("[ERROR] No documents indexed. Run 'ingest' first.")
         return
     
-    print(f"❓ Query: {args.question}\n")
+    print(f"Query: {args.question}\n")
     print_separator()
     print("Thinking Trace:")
     print_separator()
@@ -93,7 +92,7 @@ def cmd_query(args):
     
     print()
     print_separator()
-    print("📝 Response:")
+    print("Response:")
     print_separator()
     print()
     print(response)
@@ -110,7 +109,7 @@ def cmd_status(args):
     status = engine.get_status()
     
     print_separator()
-    print("📊 Index Status")
+    print("Index Status")
     print_separator()
     print(f"   Parent Entities:  {status['parent_documents']}")
     print(f"   Child Chunks:     {status['child_chunks']}")
@@ -120,9 +119,9 @@ def cmd_status(args):
     print()
     
     if status['parent_documents'] == 0:
-        print("⚠️  No documents indexed. Run 'ingest <url>' to get started.")
+        print("[WARNING] No documents indexed. Run 'ingest <url>' to get started.")
     else:
-        print("✅ System ready for queries.")
+        print("[OK] System ready for queries.")
     print()
 
 
@@ -173,10 +172,10 @@ Examples:
     try:
         args.func(args)
     except KeyboardInterrupt:
-        print("\n\n⚠️  Operation cancelled by user.")
+        print("\n\n[CANCELLED] Operation cancelled by user.")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n[ERROR] {e}")
         sys.exit(1)
 
 

@@ -1,6 +1,33 @@
-# tracking
-temp_repo/
-chroma_db/
+# --- Python Basics ---
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
 .env
+
+# --- Local AI & Vector DB (CRITICAL) ---
+# Do NOT upload your local "Digital Brain"
+chroma_db/
+vector_store/
+*.db
+*.sqlite3
+
+# --- Temporary Code Storage ---
+# We ignore the cloned repos we are analyzing
+temp_repo/
+data/raw/
+
+# --- Mac Specifics ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- C++ / Build Artifacts ---
+*.o
+*.obj
+*.exe
+*.out
+build/
+dist/

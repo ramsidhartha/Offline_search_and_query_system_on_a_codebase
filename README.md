@@ -1,8 +1,8 @@
-# 🧠 Structural Code Intelligence System
+# Structural Code Intelligence System
 
 An offline RAG system with AST-aware chunking, hierarchical retrieval, and citation-grounded answers.
 
-## ✨ Features
+## Features
 
 - **AST-Surgical Slicing**: Parses Python with `ast` module, JS/CPP with language-aware splitters
 - **Parent-Child Retrieval**: Search fine-grained chunks, retrieve full function context
@@ -10,14 +10,14 @@ An offline RAG system with AST-aware chunking, hierarchical retrieval, and citat
 - **100% Offline**: Runs entirely locally with Ollama (gemma2:2b + nomic-embed-text)
 - **Citation Grounded**: Every answer cites file paths and line numbers
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
 1. **Python 3.10+**
 2. **Ollama** - Install from [ollama.ai](https://ollama.ai)
 
-### Setup (One-time)
+### Setup
 
 ```bash
 # 1. Clone this repository
@@ -48,35 +48,35 @@ python3 main.py query "Where is the database connection initialized?"
 python3 main.py status
 ```
 
-## 📖 Example Output
+## Example Output
 
 ```
-❓ Query: How is the CNN model defined?
+Query: How is the CNN model defined?
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------------------------
 Thinking Trace:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔍 Searching vector space using MMR...
-📄 Found relevant child snippet in custom_cnn.py...
-⬆️ Elevating to Parent Context (build_custom_cnn)...
-🤖 Generating response with gemma2:2b...
+--------------------------------------------------
+[SEARCH] Searching vector space using MMR...
+[FOUND] Found relevant child snippet in custom_cnn.py...
+[ELEVATE] Elevating to Parent Context (build_custom_cnn)...
+[GENERATE] Generating response with gemma2:2b...
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📝 Response:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------------------------
+Response:
+--------------------------------------------------
 The CNN model is defined in `build_custom_cnn` [custom_cnn.py:12-84].
 It uses 3 convolutional blocks with MaxPooling2D...
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
-Query → MMR Search (children) → Parent Elevation → LLM → Cited Answer
-           ↓                         ↓
-     ChromaDB (k=4)          Full function context
+Query -> MMR Search (children) -> Parent Elevation -> LLM -> Cited Answer
+              |                         |
+        ChromaDB (k=4)          Full function context
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── main.py              # CLI interface with thinking trace
@@ -88,7 +88,7 @@ Query → MMR Search (children) → Parent Elevation → LLM → Cited Answer
 └── chroma_db/           # Persistent vector storage (auto-created)
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
@@ -98,20 +98,19 @@ Query → MMR Search (children) → Parent Elevation → LLM → Cited Answer
 | Embedding model | nomic-embed-text | 768-dimensional embeddings |
 | LLM model | gemma2:2b | Local generation model |
 
-## 📊 Performance
+## Performance
 
 - **Ingestion**: ~10-30s depending on repo size
 - **Query latency**: ~15s (local LLM inference)
 - **Index persistence**: Survives restarts via ChromaDB
 
-## 🔬 Research Foundations
+## Research Foundations
 
-This system implements:
-- **MMR**: λ-weighted diversity-relevance tradeoff
-- **HNSW**: Approximate nearest neighbor via hierarchical graphs
-- **Parent-Child Retrieval**: Two-tier information hierarchy
-- **AST as DAG**: Directed acyclic graph for code structure
+- **MMR**: Carbonell & Goldstein, 1998
+- **HNSW**: Malkov & Yashunin, 2016
+- **Transformers**: Vaswani et al., 2017
+- **RAG**: Lewis et al., 2020
 
-## 📝 License
+## License
 
 MIT

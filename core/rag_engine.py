@@ -130,7 +130,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
         trace = ThinkingTrace(self.verbose)
         
         # Clear existing stores for fresh indexing
-        trace.add("🗑️", "Clearing existing vector stores...")
+        trace.add("[CLEAR]", "Clearing existing vector stores...")
         
         parent_dir = self.chroma_dir / "parent"
         child_dir = self.chroma_dir / "child"
@@ -153,19 +153,19 @@ If the context doesn't contain enough information to answer, say so clearly."""
                 self._parent_cache[parent_id] = doc
         
         # Truncate parent docs for embedding (nomic-embed-text has ~8k token limit)
-        trace.add("📦", f"Indexing {len(parent_docs)} parent documents...")
+        trace.add("[INDEX]", f"Indexing {len(parent_docs)} parent documents...")
         
         if parent_docs:
             truncated_parents = [self._truncate_for_embedding(doc) for doc in parent_docs]
             self.parent_store.add_documents(truncated_parents)
         
         # Index child documents (already small enough)
-        trace.add("📄", f"Indexing {len(child_docs)} child chunks...")
+        trace.add("[INDEX]", f"Indexing {len(child_docs)} child chunks...")
         
         if child_docs:
             self.child_store.add_documents(child_docs)
         
-        trace.add("✅", "Indexing complete!")
+        trace.add("[DONE]", "Indexing complete!")
         
         return {
             "parent_count": len(parent_docs),
@@ -213,7 +213,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
         if parent_id and parent_id in self._parent_cache:
             parent = self._parent_cache[parent_id]
             entity_name = parent.metadata.get("entity_name", "unknown")
-            trace.add("⬆️", f"Elevating to Parent Context ({entity_name})...")
+            trace.add("[ELEVATE]", f"Elevating to Parent Context ({entity_name})...")
             return parent
         
         # If parent not in cache, try to fetch from store
@@ -227,7 +227,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
                 )
                 self._parent_cache[parent_id] = parent
                 entity_name = parent.metadata.get("entity_name", "unknown")
-                trace.add("⬆️", f"Elevating to Parent Context ({entity_name})...")
+                trace.add("[ELEVATE]", f"Elevating to Parent Context ({entity_name})...")
                 return parent
         
         # Fallback: return child as-is
@@ -252,7 +252,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
         """
         trace = ThinkingTrace(self.verbose)
         
-        trace.add("🔍", "Searching vector space using MMR...")
+        trace.add("[SEARCH]", "Searching vector space using MMR...")
         
         # MMR search on child chunks
         child_results = self.child_store.max_marginal_relevance_search(
@@ -267,7 +267,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
         
         for child in child_results:
             file_path = child.metadata.get("file_path", "unknown")
-            trace.add("📄", f"Found relevant child snippet in {file_path}...")
+            trace.add("[FOUND]", f"Found relevant child snippet in {file_path}...")
             
             parent = self._elevate_to_parent(child, trace)
             parent_id = parent.metadata.get("parent_id")
@@ -308,7 +308,7 @@ If the context doesn't contain enough information to answer, say so clearly."""
         ])
         
         # Generate response
-        trace.add("🤖", "Generating response with gemma2:2b...")
+        trace.add("[GENERATE]", "Generating response with gemma2:2b...")
         
         chain = prompt | self.llm | StrOutputParser()
         response = chain.invoke({
