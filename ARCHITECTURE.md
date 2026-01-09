@@ -143,10 +143,34 @@ for child in child_results:
 
 ---
 
-## 5. Interview Talking Points
+FULL SYSTEM STACK
+┌──────────────────────────────────────────┐
+│           USER INTERFACE LAYER            │
+│   (CLI / prompts / question handling)     │
+└──────────────────────────────────────────┘
+                  ↓
+┌──────────────────────────────────────────┐
+│          RAG ORCHESTRATION LAYER          │
+│   (query flow, module coordination)       │
+└──────────────────────────────────────────┘
+                  ↓
+┌──────────────────────────────────────────┐
+│            RAG ENGINE (CORE)               │
+│  retrieval + hierarchy + context control  │
+└──────────────────────────────────────────┘
+                  ↓
+┌──────────────────────────────────────────┐
+│        INFORMATION RETRIEVAL LAYER        │
+│  embeddings, similarity, MMR, indexing   │
+└──────────────────────────────────────────┘
+                  ↓
+┌──────────────────────────────────────────┐
+│        STRUCTURAL CODE ANALYSIS           │
+│   parsing, chunking, parent mapping       │
+└──────────────────────────────────────────┘
+                  ↓
+┌──────────────────────────────────────────┐
+│        INFRASTRUCTURE & RUNTIME            │
+│   local LLM, vector DB, storage, config   │
+└──────────────────────────────────────────┘
 
-1. **"Why AST over regex?"** → Handles nested structures, provides exact line numbers
-2. **"Why parent-child?"** → Search precision vs retrieval completeness tradeoff
-3. **"Why MMR?"** → Prevents redundant context, ensures diverse file coverage
-4. **"Why offline?"** → 100% local operation, no API costs, works without internet
-5. **"Hardest problem?"** → Context length limits required careful truncation strategy
