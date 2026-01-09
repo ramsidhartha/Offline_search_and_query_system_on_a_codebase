@@ -111,6 +111,9 @@ Query -> MMR Search (children) -> Parent Elevation -> LLM -> Cited Answer
 - **Transformers**: Vaswani et al., 2017
 - **RAG**: Lewis et al., 2020
 
+This project was developed using a human-in-the-loop workflow. Architectural exploration and implementation scaffolding were assisted by large language models, while system design decisions, integration, validation, and optimization were performed by the lead developer.
+
+
 ## License
 
 MIT
