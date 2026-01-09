@@ -30,6 +30,8 @@
 - Large chunks → complete context, but noisy embeddings
 - **Solution**: Two-tier hierarchy separates search from retrieval
 
+- Benefit: This architecture resolves the 'Precision-Recall' trade-off in RAG, allowing the system to locate specific logic via granular 'Child' embeddings while providing the LLM with the full logical context via the 'Parent' document.
+
 ---
 
 ### 1.3 MMR (Maximal Marginal Relevance)
