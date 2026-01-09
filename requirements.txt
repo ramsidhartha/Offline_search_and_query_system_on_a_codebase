@@ -1,0 +1,16 @@
+# Core LangChain
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-text-splitters>=0.3.0
+
+# Ollama Integration
+langchain-ollama>=0.2.0
+
+# Vector Store
+chromadb>=0.5.0
+
+# Git Operations
+gitpython>=3.1.40
+
+# Utilities
+uuid
