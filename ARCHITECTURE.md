@@ -1,5 +1,35 @@
 # Structural Code Intelligence System - Architecture & Decisions
 
+## System Data Flows
+
+The system has two parallel data flows that meet at ChromaDB:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 INGESTION FLOW (runs once per repo)                 │
+│                                                                     │
+│  Codebase ──► AST Parse ──► Split ──► Embed ──► ChromaDB (write)   │
+│     │                         │                      │              │
+│  .py/.js     FunctionDef   Parent    nomic-embed   Parent Store    │
+│  files       ClassDef      Child       768D        Child Store     │
+└─────────────────────────────────────────────────────────────────────┘
+                                           │
+                                    [persistent storage]
+                                           │
+┌─────────────────────────────────────────────────────────────────────┐
+│                  QUERY FLOW (runs per question)                     │
+│                                                                     │
+│  Question ──► Embed ──► MMR Search ──► Elevate ──► LLM ──► Answer  │
+│     │          │            │            │          │         │     │
+│  "How is    nomic-embed  ChromaDB     Parent    gemma2:2b  Cited   │
+│  CNN built?"   768D      (k=4)        lookup              response │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Key insight:** Both flows are **separate** — you ingest once, query many times.
+
+---
+
 ## 1. Architectural Decisions
 
 ### 1.1 AST-Surgical Slicing (vs Naive Chunking)
